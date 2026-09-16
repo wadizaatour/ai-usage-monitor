@@ -69,7 +69,7 @@ export function formatPercent(used: number, limit: number): string {
 /** Status bar text: the shortest thing that is still unambiguous. */
 export function statusBarText(record: UsageRecord | undefined): string {
   if (!record) {
-    return "$(pulse) AI Usage";
+    return "$(pulse) AI Tokens";
   }
   const icon = record.status === "error" ? "$(error)" : "$(pulse)";
   const tokens = record.usage.totalTokens ?? record.usage.outputTokens;

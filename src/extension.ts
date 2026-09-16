@@ -32,7 +32,7 @@ let ingest: IngestHandle | undefined;
 let sources: SourceManager | undefined;
 
 export async function activate(context: vscode.ExtensionContext): Promise<AiUsageMonitorApi> {
-  output = vscode.window.createOutputChannel("AI Usage Monitor");
+  output = vscode.window.createOutputChannel("AI Token Monitor");
   context.subscriptions.push(output);
 
   const config = () => vscode.workspace.getConfiguration(CONFIG_SECTION);
@@ -289,7 +289,7 @@ async function startSources(context: vscode.ExtensionContext): Promise<void> {
   if (watching.length > 0 && !context.globalState.get<boolean>(NOTICE_KEY, false)) {
     void context.globalState.update(NOTICE_KEY, true);
     void vscode.window.showInformationMessage(
-      `AI Usage Monitor is now tracking ${watching.map((s) => s.displayName).join(", ")}.`,
+      `AI Token Monitor is now tracking ${watching.map((s) => s.displayName).join(", ")}.`,
     );
   }
 }
@@ -313,7 +313,7 @@ async function showSources(): Promise<void> {
 
   const pick = await vscode.window.showQuickPick(
     [...items, { label: "$(output) Open Log", description: "Show detection diagnostics" }],
-    { title: "AI Usage — Detected Tools", placeHolder: "Tools this extension can read usage from" },
+    { title: "AI Tokens — Detected Tools", placeHolder: "Tools this extension can read usage from" },
   );
 
   if (pick?.label.includes("Open Log")) {

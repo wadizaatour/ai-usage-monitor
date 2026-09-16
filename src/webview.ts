@@ -95,7 +95,7 @@ export class UsageViewProvider implements vscode.WebviewViewProvider {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'none'; style-src ${webview.cspSource} 'unsafe-inline'; script-src 'nonce-${nonce}';">
-<title>AI Usage</title>
+<title>AI Tokens</title>
 <style>
   body {
     font-family: var(--vscode-font-family);
@@ -261,7 +261,7 @@ export class UsageViewProvider implements vscode.WebviewViewProvider {
 
   <div class="empty" id="empty">
     No requests recorded yet. If you have Claude Code installed, requests appear here as you make them —
-    run <code>AI Usage: Show Detected Tools</code> to check what was found.
+    run <code>AI Tokens: Show Detected Tools</code> to check what was found.
   </div>
 
 <script nonce="${nonce}">

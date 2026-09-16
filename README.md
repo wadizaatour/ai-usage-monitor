@@ -1,4 +1,4 @@
-# AI Usage Monitor
+# AI Token Monitor
 
 A VS Code extension that shows token usage, model, duration, and cost for every AI request.
 
@@ -22,7 +22,7 @@ Four ways in, all converging on the same pricing logic.
 
 On startup the extension detects AI tools installed on this machine and tracks them with no setup. Today that means **Claude Code**: it reads the JSONL transcripts Claude Code already writes under `~/.claude/projects/`, so requests appear as you make them.
 
-Run **AI Usage: Show Detected Tools** to see what was found and where it's reading from.
+Run **AI Tokens: Show Detected Tools** to see what was found and where it's reading from.
 
 This is read-only and local:
 
@@ -44,7 +44,7 @@ Adding another tool means writing one `UsageSource` in `src/sources/` — the st
 
 A loopback HTTP endpoint for your own tooling — a LiteLLM callback, a proxy, a test harness.
 
-Enable `aiUsageMonitor.ingest.enabled`, then run **AI Usage: Copy Ingest Endpoint Snippet** for a ready-to-paste `curl` with the current token.
+Enable `aiUsageMonitor.ingest.enabled`, then run **AI Tokens: Copy Ingest Endpoint Snippet** for a ready-to-paste `curl` with the current token.
 
 ```bash
 curl -sS -X POST http://127.0.0.1:7337/usage \
@@ -72,7 +72,7 @@ Security posture, since this opens a socket:
 ### 3. From another extension
 
 ```ts
-const api = vscode.extensions.getExtension("local.ai-usage-monitor")?.exports;
+const api = vscode.extensions.getExtension("wadizaatour.ai-token-monitor")?.exports;
 api?.record(response, { durationMs: 1234, provider: "anthropic" });
 ```
 
@@ -109,12 +109,12 @@ Rates are USD per 1M tokens. A rate you omit is treated as unverified, not as ze
 
 | Command | Does |
 | --- | --- |
-| `AI Usage: Show Usage Panel` | Focus the Requests view |
-| `AI Usage: Show Detected Tools` | List installed tools and whether they're tracked |
-| `AI Usage: Clear History` | Delete all records (confirms first) |
-| `AI Usage: Export History as JSON` / `as CSV` | Write history to a file |
-| `AI Usage: Copy Ingest Endpoint Snippet` | Copy a `curl` with the live token |
-| `AI Usage: Show Log` | Open the diagnostics channel |
+| `AI Tokens: Show Usage Panel` | Focus the Requests view |
+| `AI Tokens: Show Detected Tools` | List installed tools and whether they're tracked |
+| `AI Tokens: Clear History` | Delete all records (confirms first) |
+| `AI Tokens: Export History as JSON` / `as CSV` | Write history to a file |
+| `AI Tokens: Copy Ingest Endpoint Snippet` | Copy a `curl` with the live token |
+| `AI Tokens: Show Log` | Open the diagnostics channel |
 
 ## Running it
 
@@ -123,7 +123,7 @@ npm install
 npm run build
 ```
 
-Then open this folder in VS Code and press **F5** ("Run Extension"). A second VS Code window opens with the extension loaded — look for the **AI Usage** icon in the activity bar.
+Then open this folder in VS Code and press **F5** ("Run Extension"). A second VS Code window opens with the extension loaded — look for the **AI Tokens** icon in the activity bar.
 
 The window it opens is a sandbox: the extension is active only there, not in your main editor. Edits rebuild automatically (F5 starts esbuild in watch mode), so after changing code just press **Ctrl+R** in that window to reload.
 
@@ -131,12 +131,12 @@ The window it opens is a sandbox: the extension is active only there, not in you
 
 If Claude Code is installed, the view populates on its own — the last day of requests appears at startup, and new ones show up as you make them. Use Claude Code in any terminal and watch the Requests view.
 
-Nothing showing up? Run **AI Usage: Show Detected Tools**; it reports what was found, or `Not installed`. **AI Usage: Show Log** has the detection diagnostics.
+Nothing showing up? Run **AI Tokens: Show Detected Tools**; it reports what was found, or `Not installed`. **AI Tokens: Show Log** has the detection diagnostics.
 
 To feed it by hand instead:
 
 1. In the dev window, turn on `aiUsageMonitor.ingest.enabled`.
-2. Run **AI Usage: Copy Ingest Endpoint Snippet** (`Ctrl+Shift+P`).
+2. Run **AI Tokens: Copy Ingest Endpoint Snippet** (`Ctrl+Shift+P`).
 3. Paste it into any terminal and run it.
 
 Worth trying either way: change the `model` to a name that isn't in the pricing table. Cost shows `Unavailable` rather than a plausible guess — the design rule in action.

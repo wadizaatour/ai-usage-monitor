@@ -1,6 +1,6 @@
 {
-  "name": "ai-usage-monitor",
-  "displayName": "AI Usage Monitor",
+  "name": "ai-token-monitor",
+  "displayName": "AI Token Monitor",
   "description": "Shows token usage, model, duration and verified cost for every AI request.",
   "version": "0.1.0",
   "publisher": "wadizaatour",
@@ -37,7 +37,7 @@
       "activitybar": [
         {
           "id": "aiUsageMonitor",
-          "title": "AI Usage",
+          "title": "AI Tokens",
           "icon": "media/icon.svg"
         }
       ]
@@ -54,35 +54,35 @@
     "commands": [
       {
         "command": "aiUsageMonitor.showPanel",
-        "title": "AI Usage: Show Usage Panel"
+        "title": "AI Tokens: Show Usage Panel"
       },
       {
         "command": "aiUsageMonitor.clearHistory",
-        "title": "AI Usage: Clear History"
+        "title": "AI Tokens: Clear History"
       },
       {
         "command": "aiUsageMonitor.exportJson",
-        "title": "AI Usage: Export History as JSON"
+        "title": "AI Tokens: Export History as JSON"
       },
       {
         "command": "aiUsageMonitor.exportCsv",
-        "title": "AI Usage: Export History as CSV"
+        "title": "AI Tokens: Export History as CSV"
       },
       {
         "command": "aiUsageMonitor.copyIngestSnippet",
-        "title": "AI Usage: Copy Ingest Endpoint Snippet"
+        "title": "AI Tokens: Copy Ingest Endpoint Snippet"
       },
       {
         "command": "aiUsageMonitor.showSources",
-        "title": "AI Usage: Show Detected Tools"
+        "title": "AI Tokens: Show Detected Tools"
       },
       {
         "command": "aiUsageMonitor.showOutput",
-        "title": "AI Usage: Show Log"
+        "title": "AI Tokens: Show Log"
       }
     ],
     "configuration": {
-      "title": "AI Usage Monitor",
+      "title": "AI Token Monitor",
       "properties": {
         "aiUsageMonitor.statusBar.enabled": {
           "type": "boolean",
@@ -99,7 +99,7 @@
         "aiUsageMonitor.sources.enabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Automatically track AI tools installed on this machine by reading the usage records they already write to disk. Read-only: nothing is sent anywhere, and prompt and response text is never read. Run `AI Usage: Show Detected Tools` to see what was found."
+          "markdownDescription": "Automatically track AI tools installed on this machine by reading the usage records they already write to disk. Read-only: nothing is sent anywhere, and prompt and response text is never read. Run `AI Tokens: Show Detected Tools` to see what was found."
         },
         "aiUsageMonitor.sources.disabled": {
           "type": "array",
