@@ -1,0 +1,31 @@
+# What NOT to ship in the .vsix.
+#
+# The published extension is just the bundle, the icon, and the docs: esbuild
+# has already inlined every dependency into dist/extension.js, so shipping
+# sources or node_modules would only bloat the download.
+#
+# Worth being deliberate here — everything listed in the package is world-
+# readable once published.
+
+# Sources and build inputs (dist/ is the shipped artifact).
+src/**
+out/**
+.vscode/**
+.vscode-test/**
+node_modules/**
+
+# Build and lint config.
+esbuild.mjs
+tsconfig.json
+tsconfig.tsbuildinfo
+.eslintrc.json
+**/*.map
+
+# Repo scaffolding.
+.gitignore
+.github/**
+*.vsix
+scripts/**
+
+# Lockfile: meaningless to consumers, and it enumerates the dependency tree.
+package-lock.json

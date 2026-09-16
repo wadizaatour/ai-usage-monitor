@@ -1,0 +1,160 @@
+{
+  "name": "ai-usage-monitor",
+  "displayName": "AI Usage Monitor",
+  "description": "Shows token usage, model, duration and verified cost for every AI request.",
+  "version": "0.1.0",
+  "publisher": "wadizaatour",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wadizaatour/ai-usage-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wadizaatour/ai-usage-monitor/issues"
+  },
+  "homepage": "https://github.com/wadizaatour/ai-usage-monitor#readme",
+  "engines": {
+    "vscode": "^1.90.0",
+    "node": ">=20"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "tokens",
+    "cost",
+    "usage",
+    "claude"
+  ],
+  "icon": "media/icon.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "aiUsageMonitor",
+          "title": "AI Usage",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "aiUsageMonitor": [
+        {
+          "id": "aiUsageMonitor.usageView",
+          "name": "Requests",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "aiUsageMonitor.showPanel",
+        "title": "AI Usage: Show Usage Panel"
+      },
+      {
+        "command": "aiUsageMonitor.clearHistory",
+        "title": "AI Usage: Clear History"
+      },
+      {
+        "command": "aiUsageMonitor.exportJson",
+        "title": "AI Usage: Export History as JSON"
+      },
+      {
+        "command": "aiUsageMonitor.exportCsv",
+        "title": "AI Usage: Export History as CSV"
+      },
+      {
+        "command": "aiUsageMonitor.copyIngestSnippet",
+        "title": "AI Usage: Copy Ingest Endpoint Snippet"
+      },
+      {
+        "command": "aiUsageMonitor.showSources",
+        "title": "AI Usage: Show Detected Tools"
+      },
+      {
+        "command": "aiUsageMonitor.showOutput",
+        "title": "AI Usage: Show Log"
+      }
+    ],
+    "configuration": {
+      "title": "AI Usage Monitor",
+      "properties": {
+        "aiUsageMonitor.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the latest request's usage in the status bar."
+        },
+        "aiUsageMonitor.history.maxEntries": {
+          "type": "number",
+          "default": 500,
+          "minimum": 10,
+          "maximum": 10000,
+          "description": "How many requests to keep in the local history."
+        },
+        "aiUsageMonitor.sources.enabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Automatically track AI tools installed on this machine by reading the usage records they already write to disk. Read-only: nothing is sent anywhere, and prompt and response text is never read. Run `AI Usage: Show Detected Tools` to see what was found."
+        },
+        "aiUsageMonitor.sources.disabled": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "markdownDescription": "Source ids to skip, e.g. `[\"claude-code\"]`. Everything detected is tracked unless listed here."
+        },
+        "aiUsageMonitor.sources.backfillDays": {
+          "type": "number",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 90,
+          "markdownDescription": "How many days of existing history to import when tracking starts. `0` records only new requests. Large values on a machine with long history will take a moment to scan."
+        },
+        "aiUsageMonitor.ingest.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Run a loopback HTTP endpoint that accepts usage metadata from your own tools and proxies (e.g. a LiteLLM callback)."
+        },
+        "aiUsageMonitor.ingest.port": {
+          "type": "number",
+          "default": 7337,
+          "description": "Port for the loopback ingest endpoint. Bound to 127.0.0.1 only."
+        },
+        "aiUsageMonitor.pricing.custom": {
+          "type": "object",
+          "default": {},
+          "markdownDescription": "Verified pricing per model, in USD per 1M tokens. Cost is only ever shown for models listed here or in the built-in verified table; these entries take precedence over it. Keys: `input`, `output` (both required), and the optional `cachedInput`, `cacheWrite`, `contextWindow`. An omitted rate counts as unverified, not as zero — a request billing that token class will show no cost rather than a partial one. Use the exact model id your provider reports, including any `anthropic.` or `@date` prefix. Example: `{ \"my-model\": { \"input\": 3, \"output\": 15, \"cachedInput\": 0.3 } }`"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -b",
+    "typecheck": "tsc -b --noEmit tsconfig.json",
+    "lint": "eslint src --ext .ts",
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "package": "node esbuild.mjs --production",
+    "icon": "node scripts/make-icon.mjs",
+    "vsix": "npm run verify && npm run package && npx --yes @vscode/vsce package",
+    "pretest": "npm run compile",
+    "test": "node --test \"out/test/**/*.test.js\"",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^8.57.1",
+    "typescript": "^5.7.3"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
+}

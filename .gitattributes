@@ -1,0 +1,8 @@
+# Normalize to LF in the repository so the tree is identical regardless of
+# which platform a contributor is on. Git still checks out native line endings
+# on Windows; this only fixes what gets stored.
+* text=auto eol=lf
+
+# Binary: never touch these.
+*.png binary
+*.vsix binary

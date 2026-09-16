@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // F5's preLaunchTask. Deliberately a one-shot build rather than a watch:
+      // a background task has to tell VS Code when each rebuild finishes, via a
+      // problem matcher, and a matcher VS Code rejects makes F5 fail with
+      // "the task cannot be tracked" instead of launching. Nothing to track
+      // here — the task runs, exits, and the debugger starts.
+      "label": "build",
+      "type": "npm",
+      "script": "build",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      // Opt-in auto-rebuild: run it from the task list when you want it, so a
+      // watch problem never blocks F5.
+      "label": "watch",
+      "type": "npm",
+      "script": "watch",
+      "isBackground": true,
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      // Declared rather than relying on VS Code's auto-detected "npm: compile",
+      // so the Debug Tests config references a task that provably exists here.
+      "label": "compile",
+      "type": "npm",
+      "script": "compile",
+      "group": "build",
+      "presentation": { "reveal": "silent", "panel": "shared" },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "verify",
+      "type": "npm",
+      "script": "verify",
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    }
+  ]
+}

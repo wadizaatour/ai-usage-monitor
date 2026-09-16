@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      // Names the task literally rather than ${defaultBuildTask}, so renaming
+      // or re-tagging a task can't silently point F5 somewhere unexpected.
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "Debug Tests",
+      "type": "node",
+      "request": "launch",
+      // Plain node:test over the compiled output — no extension host needed,
+      // which is the payoff for keeping vscode imports out of the core.
+      "program": "${workspaceFolder}/out/test",
+      "runtimeArgs": ["--test"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
+      "console": "integratedTerminal",
+      "preLaunchTask": "compile"
+    }
+  ]
+}
