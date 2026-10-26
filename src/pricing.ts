@@ -38,15 +38,17 @@ interface BuiltinPricing extends ModelPricing {
  * a Bedrock model id resolves to no built-in entry by design — configure
  * `aiUsageMonitor.pricing.custom` with your negotiated partner rates instead.
  *
- * Cache columns: reads are 0.1x input and 5-minute writes are 1.25x input across
- * this generation, with one deliberate exception — claude-fable-5-1 reads at a
- * published flat $0.25/MTok rather than the $1.00 the multiplier would give.
- * That exception is the reason each row carries explicit numbers instead of the
- * table computing them from `inputPerMTok`.
+ * Cache columns: 5-minute writes are 1.25x input everywhere, but reads are not
+ * one multiplier — 0.1x on most models, 0.05x on claude-opus-5-5 and
+ * claude-sonnet-5-5, and 0.025x on claude-fable-5-1. Those exceptions are the
+ * reason each row carries explicit numbers instead of the table computing them
+ * from `inputPerMTok`.
  *
- * Omitted on purpose: claude-mythos-5-1. Its cache read rate was still
- * unannounced at launch, and rules 1 and 2 above say an unverified rate is not
- * a rate. Add it via `pricing.custom` once you have the number.
+ * Omitted on purpose: claude-mythos-5-1, whose cache read rate was still
+ * unannounced at launch; and claude-haiku-5-5, whose rates step up for prompts
+ * over 100k tokens. A flat row would misprice every long request, and rules 1
+ * and 2 above say a rate that is only sometimes right is not a rate. Add either
+ * via `pricing.custom` if you want a number anyway.
  */
 export const BUILTIN_PRICING: Readonly<Record<string, BuiltinPricing>> = {
   "claude-fable-5-1": {
@@ -64,6 +66,14 @@ export const BUILTIN_PRICING: Readonly<Record<string, BuiltinPricing>> = {
     cacheWritePerMTok: 12.5,
     contextWindow: 1_000_000,
     verifiedOn: "2026-06-24",
+  },
+  "claude-opus-5-5": {
+    inputPerMTok: 4,
+    outputPerMTok: 20,
+    cacheReadPerMTok: 0.2,
+    cacheWritePerMTok: 5,
+    contextWindow: 1_000_000,
+    verifiedOn: "2026-10-26",
   },
   "claude-opus-5": {
     inputPerMTok: 5,
@@ -96,6 +106,14 @@ export const BUILTIN_PRICING: Readonly<Record<string, BuiltinPricing>> = {
     cacheWritePerMTok: 6.25,
     contextWindow: 1_000_000,
     verifiedOn: "2026-06-24",
+  },
+  "claude-sonnet-5-5": {
+    inputPerMTok: 2,
+    outputPerMTok: 10,
+    cacheReadPerMTok: 0.1,
+    cacheWritePerMTok: 2.5,
+    contextWindow: 1_000_000,
+    verifiedOn: "2026-10-26",
   },
   "claude-sonnet-5": {
     inputPerMTok: 2,

@@ -29,6 +29,18 @@ describe("computeCost", () => {
     assert.equal(cost?.cachedUsd, 0.25);
   });
 
+  test("prices opus-5-5 and sonnet-5-5 cache reads at their published 0.05x rate", () => {
+    // 0.1x would give $0.40 and $0.20.
+    assert.equal(computeCost("claude-opus-5-5", { cachedTokens: 1_000_000 })?.cachedUsd, 0.2);
+    assert.equal(computeCost("claude-sonnet-5-5", { cachedTokens: 1_000_000 })?.cachedUsd, 0.1);
+    const opus = computeCost("claude-opus-5-5", { inputTokens: 1_000_000, outputTokens: 1_000_000, cacheWriteTokens: 1_000_000 });
+    assert.equal(opus?.totalUsd, 4 + 20 + 5);
+  });
+
+  test("leaves haiku-5-5 unpriced: a flat row would misprice its long prompts", () => {
+    assert.equal(computeCost("claude-haiku-5-5", { inputTokens: 1000, outputTokens: 10 }), undefined);
+  });
+
   test("returns undefined for a model with no verified pricing", () => {
     assert.equal(computeCost("some-other-model", { inputTokens: 100, outputTokens: 50 }), undefined);
   });
